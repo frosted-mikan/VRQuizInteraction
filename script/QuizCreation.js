@@ -3,13 +3,13 @@
 */
 
 import * as THREE from 'https://cdn.skypack.dev/three@0.129.0';
-import { scene, objsToTest, dragObjs } from '/script/script.js';
+import { scene, objsToTest, dragObjs } from '/360videodemo/script/script.js';
 
 // Load the fonts 
-var font_json_bold = "/assets/AvenirNextLTPro-Bold-msdf.json";
-var font_png_bold = "/assets/AvenirNextLTPro-Bold.png";
-var font_json = "/assets/AvenirNextLTPro-Regular-msdf.json";
-var font_png = "/assets/AvenirNextLTPro-Regular.png";
+var font_json_bold = "/360videodemo/assets/AvenirNextLTPro-Bold-msdf.json";
+var font_png_bold = "/360videodemo/assets/AvenirNextLTPro-Bold.png";
+var font_json = "/360videodemo/assets/AvenirNextLTPro-Regular-msdf.json";
+var font_png = "/360videodemo/assets/AvenirNextLTPro-Regular.png";
 
 // Begin quiz creation 
 function makeQuiz() {
@@ -138,10 +138,10 @@ function makeQuiz() {
     const buttonFish = new ThreeMeshUI.Block(buttonOptions2);
     const buttonPenguin = new ThreeMeshUI.Block(buttonOptions2);
     //add images to the option buttons 
-    const pandaImg = new THREE.TextureLoader().load('/assets/panda.jpg');
-    const bearImg = new THREE.TextureLoader().load('/assets/bear.jpg');
-    const fishImg = new THREE.TextureLoader().load('/assets/fish.jpg');
-    const penguinImg = new THREE.TextureLoader().load('/assets/penguin.jpg');
+    const pandaImg = new THREE.TextureLoader().load('/360videodemo/assets/panda.jpg');
+    const bearImg = new THREE.TextureLoader().load('/360videodemo/assets/bear.jpg');
+    const fishImg = new THREE.TextureLoader().load('/360videodemo/assets/fish.jpg');
+    const penguinImg = new THREE.TextureLoader().load('/360videodemo/assets/penguin.jpg');
     buttonPanda.set({backgroundTexture: pandaImg});
     buttonBear.set({backgroundTexture: bearImg});
     buttonFish.set({backgroundTexture: fishImg});

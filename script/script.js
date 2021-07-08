@@ -6,12 +6,12 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.129.0';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js';
 import { DragControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/DragControls.js';
-import { VRButton } from '/script/VRButton.js';
-import VRControl from '/script/VRControl.js';
-import { makeQuiz } from '/script/QuizCreation.js';
-// import { deleteUI, menuUIVisible } from '/script/MenuHelpers.js';
-import { updateButtons, raycast } from '/script/ButtonInteraction.js';
-// import { deleteKeyboard } from '/script/Keyboard.js';
+import { VRButton } from '/360videodemo/script/VRButton.js';
+import VRControl from '/360videodemo/script/VRControl.js';
+import { makeQuiz } from '/360videodemo/script/QuizCreation.js';
+// import { deleteUI, menuUIVisible } from '/360videodemo/script/MenuHelpers.js';
+import { updateButtons, raycast } from '/360videodemo/script/ButtonInteraction.js';
+// import { deleteKeyboard } from '/360videodemo/script/Keyboard.js';
 
 
 let camera, scene, renderer, vrControl, orbitControls, dragControls;
@@ -174,7 +174,7 @@ function init() {
     scene.add(vrControl.controllerGrips[0], vrControl.controllers[0]);
     vrControl.controllers[0].addEventListener('selectstart', onSelectStart);
     vrControl.controllers[0].addEventListener('selectend', onSelectEnd);
-    
+
     scene.add(camera);
 
 }
