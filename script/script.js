@@ -38,6 +38,18 @@ document.querySelector('button').addEventListener('click', openFullscreen);
 
 // ---------------------------------------------------------------------------------------
 
+function fadeOut() {
+    //fade out the background video
+    var mesh1 = scene.getObjectByName('mesh1');
+    mesh1.material.transparent = true;
+    mesh1.material.opacity = 1;
+    TweenMax.to(mesh1.material, 1, { opacity: 0.7 });
+    var mesh2 = scene.getObjectByName('mesh2');
+    mesh2.material.transparent = true;
+    mesh2.material.opacity = 1;
+    TweenMax.to(mesh2.material, 1, { opacity: 0.7 });
+}
+
 // Set listeners on fullscreen
 function enterVR() {
     // EventListeners for mouse
@@ -46,23 +58,14 @@ function enterVR() {
         mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     });
 
-    //Event Listener for timecode to know which Q to display
+    // Event Listener for timecode to know which Q to display
     var video = document.getElementById("video");
-    video.addEventListener("timeupdate", function(){
-        if (this.currentTime >= 10 ) {
-            //fade out the background video
-            var mesh1 = scene.getObjectByName('mesh1');
-            mesh1.material.transparent = true;
-            mesh1.material.opacity = 1;
-            TweenMax.to(mesh1.material, 1, { opacity: 0.7 });
-            var mesh2 = scene.getObjectByName('mesh2');
-            mesh2.material.transparent = true;
-            mesh2.material.opacity = 1;
-            TweenMax.to(mesh2.material, 1, { opacity: 0.7 });
-            //pause the video
-            this.pause();
-            //display the question
-            scene.getObjectByName('quiz').visible = true;
+    video.addEventListener("timeupdate", function() {
+        if (this.currentTime >= 10) {
+            fadeOut(); //animate fade out the video
+            this.pause(); //pause the video
+            const container = scene.getObjectByName('quiz');
+            container.getObjectByName('firstQ').visible = true; //display the question
         }
     });
     
@@ -171,16 +174,7 @@ function init() {
     scene.add(vrControl.controllerGrips[0], vrControl.controllers[0]);
     vrControl.controllers[0].addEventListener('selectstart', onSelectStart);
     vrControl.controllers[0].addEventListener('selectend', onSelectEnd);
-    // vrControl.controllers[0].addEventListener('squeezestart', ()=> { 
-    //     if (scene.getObjectByName('UI').visible) {
-    //         deleteUI();
-    //         if (scene.getObjectByName('keysFull')) deleteKeyboard();
-    //     }
-    //     else {
-    //         menuUIVisible();
-    //     }
-    // });
-
+    
     scene.add(camera);
 
 }

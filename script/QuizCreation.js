@@ -19,7 +19,6 @@ function makeQuiz() {
     scene.add(container);
     dragObjs.push(container); //not sure if we want it to be draggable
     container.position.set(0, 0.88, -1); 
-    container.visible = false;
 
     //First Question: Cities ------------------------------
     // first Q outer container 
@@ -44,7 +43,9 @@ function makeQuiz() {
         })
     );
     firstQ.add(cityQ);
+    firstQ.visible = false;
     container.add(firstQ);
+    firstQ.name = "firstQ";
     // first Q button options and configuration 
     const buttonOptions = {
         width: 0.6,
@@ -96,43 +97,127 @@ function makeQuiz() {
     //add option buttons to objsToTest
     objsToTest.push(buttonRio, buttonNYC, buttonLondon, buttonDubai);
 
-    // //Second Question: Animals -----------------------
-    // // second Q outer container 
-    // const secondQ = new ThreeMeshUI.Block({
-    //     height: 0.8,
-    //     width: 0.8,
-    //     backgroundOpacity: 1,
-    //     justifyContent: 'center',
-    //     fontFamily: font_json_bold,
-    //     fontTexture: font_png_bold,
-    //     fontSize: 0.04
-    // });
-    // const animalQ = new ThreeMeshUI.Block({
-    //     height: 0.1,
-    //     width: 0.8, 
-    //     justifyContent: 'center',
-    //     backgroundOpacity: 0
-    // })
-    // animalQ.add(
-    //     new ThreeMeshUI.Text({
-    //         content: 'What animal would you like to see?'
-    //     })
-    // );
-    // secondQ.add(animalQ);
-    // container.add(secondQ);
-    // //create the option buttons 
-    // const buttonPanda = new ThreeMeshUI.Block(buttonOptions);
-    // const buttonBear = new ThreeMeshUI.Block(buttonOptions);
-    // const buttonFish = new ThreeMeshUI.Block(buttonOptions);
-    // const buttonPenguin = new ThreeMeshUI.Block(buttonOptions);
-    // //add images to the option buttons 
-    // //add states to the option buttons
-    // //add option buttons to firstQ container
-    // secondQ.add(buttonPanda, buttonBear, buttonFish, buttonPenguin);
-    // //add option buttons to objsToTest
-    // objsToTest.push(buttonPanda, buttonBear, buttonFish, buttonPenguin);
+    //Second Question: Animals -----------------------
+    // second Q outer container 
+    const secondQ = new ThreeMeshUI.Block({
+        height: 1,
+        width: 0.8,
+        backgroundOpacity: 1,
+        justifyContent: 'center',
+        fontFamily: font_json_bold,
+        fontTexture: font_png_bold,
+        fontSize: 0.04
+    });
+    const animalQ = new ThreeMeshUI.Block({
+        height: 0.1,
+        width: 0.8, 
+        justifyContent: 'center',
+        backgroundOpacity: 0
+    })
+    animalQ.add(
+        new ThreeMeshUI.Text({
+            content: 'What animal would you like to see?'
+        })
+    );
+    secondQ.add(animalQ);
+    secondQ.visible = false;
+    container.add(secondQ);
+    secondQ.name = "secondQ";
+    //create the option buttons 
+    const buttonOptions2 = {
+        width: 0.6,
+        height: 0.2,
+        justifyContent: 'center',
+        alignContent: 'center',
+        padding: 0.04,
+        fontSize: 0.03,
+        backgroundOpacity: 1
+    };
+    const buttonPanda = new ThreeMeshUI.Block(buttonOptions2);
+    const buttonBear = new ThreeMeshUI.Block(buttonOptions2);
+    const buttonFish = new ThreeMeshUI.Block(buttonOptions2);
+    const buttonPenguin = new ThreeMeshUI.Block(buttonOptions2);
+    //add images to the option buttons 
+    const pandaImg = new THREE.TextureLoader().load('/assets/panda.jpg');
+    const bearImg = new THREE.TextureLoader().load('/assets/bear.jpg');
+    const fishImg = new THREE.TextureLoader().load('/assets/fish.jpg');
+    const penguinImg = new THREE.TextureLoader().load('/assets/penguin.jpg');
+    buttonPanda.set({backgroundTexture: pandaImg});
+    buttonBear.set({backgroundTexture: bearImg});
+    buttonFish.set({backgroundTexture: fishImg});
+    buttonPenguin.set({backgroundTexture: penguinImg});
+    //add states to the option buttons
+    const hoveredStateAttributes2 = {
+        state: "hovered",
+        attributes: {
+            backgroundOpacity: 0.5
+        },
+    };
+    const idleStateAttributes2 = {
+        state: "idle",
+        attributes: {
+            backgroundOpacity: 1
+        },
+    };
+    buttonPanda.setupState(hoveredStateAttributes2);
+    buttonPanda.setupState(idleStateAttributes2);
+
+    buttonBear.setupState(hoveredStateAttributes2);
+    buttonBear.setupState(idleStateAttributes2);
+
+    buttonFish.setupState(hoveredStateAttributes2);
+    buttonFish.setupState(idleStateAttributes2);
+
+    buttonPenguin.setupState(hoveredStateAttributes2);
+    buttonPenguin.setupState(idleStateAttributes2);
+    //add option buttons to secondQ container
+    secondQ.add(buttonPanda, buttonBear, buttonFish, buttonPenguin);
+    //add option buttons to objsToTest
+    objsToTest.push(buttonPanda, buttonBear, buttonFish, buttonPenguin);
     
-    // //Third Question: Restart---------------------------
+    //Third Question: Restart---------------------------
+    // third Q outer container 
+    const thirdQ = new ThreeMeshUI.Block({
+        height: 0.5,
+        width: 0.8,
+        backgroundOpacity: 1,
+        justifyContent: 'center',
+        fontFamily: font_json_bold,
+        fontTexture: font_png_bold,
+        fontSize: 0.04
+    });
+    const restartQ = new ThreeMeshUI.Block({
+        height: 0.1,
+        width: 0.8, 
+        justifyContent: 'center',
+        backgroundOpacity: 0
+    })
+    restartQ.add(
+        new ThreeMeshUI.Text({
+            content: 'Would you like to start over?'
+        })
+    );
+    thirdQ.add(restartQ);
+    // thirdQ.visible = false;
+    container.add(thirdQ);
+    thirdQ.name = "thirdQ";
+    thirdQ.position.set(0,0,1);
+    //create the option buttons 
+    const buttonYes = new ThreeMeshUI.Block(buttonOptions);
+    const buttonNo = new ThreeMeshUI.Block(buttonOptions);
+    //add text to the option buttons 
+    buttonYes.add(new ThreeMeshUI.Text({content: 'Yes'}));
+    buttonNo.add(new ThreeMeshUI.Text({content: 'No'}));
+    //add states to the option buttons 
+    buttonYes.setupState(hoveredStateAttributes);
+    buttonYes.setupState(idleStateAttributes);
+
+    buttonNo.setupState(hoveredStateAttributes);
+    buttonNo.setupState(idleStateAttributes);
+    //add option buttons to thirdQ container 
+    thirdQ.add(buttonYes, buttonNo);
+    //add option buttons to objsToTest
+    objsToTest.push(buttonYes, buttonNo);
 
 }
 
