@@ -8,10 +8,8 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/js
 import { DragControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/DragControls.js';
 import { VRButton } from '/360videodemo/script/VRButton.js';
 import VRControl from '/360videodemo/script/VRControl.js';
-import { makeQuiz } from '/360videodemo/script/QuizCreation.js';
-// import { deleteUI, menuUIVisible } from '/360videodemo/script/MenuHelpers.js';
-import { updateButtons, raycast } from '/360videodemo/script/ButtonInteraction.js';
-// import { deleteKeyboard } from '/360videodemo/script/Keyboard.js';
+import { deletePopup, makeContainer, makeFirstQ, makeSecondQ, makeThirdQ, makeEnd } from '/360videodemo/script/QuizCreation.js';
+import { updateButtons } from '/360videodemo/script/ButtonInteraction.js';
 
 
 let camera, scene, renderer, vrControl, orbitControls, dragControls;
@@ -32,14 +30,14 @@ function openFullscreen() {
     enterVR(); 
     init();
     animate();
-    makeQuiz();
+    makeContainer(); //make outer container
 }
 document.querySelector('button').addEventListener('click', openFullscreen);
 
 // ---------------------------------------------------------------------------------------
 
+//Animation fade out/in the background video
 function fadeOut() {
-    //fade out the background video
     var mesh1 = scene.getObjectByName('mesh1');
     mesh1.material.transparent = true;
     mesh1.material.opacity = 1;
@@ -47,40 +45,159 @@ function fadeOut() {
     var mesh2 = scene.getObjectByName('mesh2');
     mesh2.material.transparent = true;
     mesh2.material.opacity = 1;
-    TweenMax.to(mesh2.material, 1, { opacity: 0.7 });
+    TweenMax.to(mesh2.material, 2, { opacity: 0.7 });
+}
+function fadeIn() {
+    var mesh1 = scene.getObjectByName('mesh1');
+    var mesh2 = scene.getObjectByName('mesh2');
+    mesh1.material.opacity = 1;
+    mesh2.material.opacity = 1;
 }
 
 // Set listeners on fullscreen
 function enterVR() {
-    // EventListeners for mouse
+    // Event Listener for mouse
     window.addEventListener('pointermove', (event) => {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     });
 
-    // Event Listener for timecode to know which Q to display
-    var video = document.getElementById("video");
+    // Event Listener for timecode
+    var firstCreated, secCreated, thirdCreated, endCreated = false; //for creating each only once on update
     video.addEventListener("timeupdate", function() {
-        if (this.currentTime >= 10) {
-            fadeOut(); //animate fade out the video
-            this.pause(); //pause the video
-            const container = scene.getObjectByName('quiz');
-            container.getObjectByName('firstQ').visible = true; //display the question
+        const container = scene.getObjectByName('quiz');
+        if (this.currentTime >= 351) {
+            //stop at the end
+            this.pause();
+        } else if (this.currentTime >= 346) {
+            //No, Thanks for playing
+            fadeIn();
+            this.play();
+            if (!endCreated) {
+                deletePopup(container.getObjectByName('thirdQ'));
+                endCreated = makeEnd();
+            }
+        } else if (this.currentTime >= 331) {
+            //(dubai ends) AnimalQ
+            fadeOut(); 
+            this.pause(); 
+            if (!secCreated) {
+                deletePopup(container.getObjectByName('firstQ'));
+                secCreated = makeSecondQ();
+            }
+        } else if (this.currentTime >= 323) {
+            //Dubai
+            container.getObjectByName('firstQ').visible = false; //hide firstQ
+            fadeIn();
+            this.play();
+        } else if (this.currentTime >= 309) {
+            //(penguin ends) RestartQ
+            fadeOut(); 
+            this.pause(); 
+            if (!thirdCreated) {
+                deletePopup(container.getObjectByName('secondQ'));
+                thirdCreated = makeThirdQ();
+            }
+        } else if (this.currentTime >= 297) {
+            //Penguin
+            container.getObjectByName('secondQ').visible = false; //hide secondQ
+            fadeIn();
+            this.play();
+        } else if (this.currentTime >= 284) {
+            //(london ends) AnimalQ
+            fadeOut(); 
+            this.pause(); 
+            if (!secCreated) {
+                deletePopup(container.getObjectByName('firstQ'));
+                secCreated = makeSecondQ();
+            }
+        } else if (this.currentTime >= 274) {
+            //London
+            container.getObjectByName('firstQ').visible = false; //hide firstQ
+            fadeIn();
+            this.play();
+        } else if (this.currentTime >= 171) {
+            //(bear ends) RestartQ
+            fadeOut(); 
+            this.pause(); 
+            if (!thirdCreated) {
+                deletePopup(container.getObjectByName('secondQ'));
+                thirdCreated = makeThirdQ();
+            }
+        } else if (this.currentTime >= 166) {
+            //Bear
+            container.getObjectByName('secondQ').visible = false; //hide secondQ
+            fadeIn();
+            this.play();
+        } else if (this.currentTime >= 164) {
+            //(panda ends) RestartQ
+            fadeOut(); 
+            this.pause(); 
+            if (!thirdCreated) {
+                deletePopup(container.getObjectByName('secondQ'));
+                thirdCreated = makeThirdQ();
+            }
+        } else if (this.currentTime >= 160) {
+            //Panda
+            container.getObjectByName('secondQ').visible = false; //hide secondQ
+            fadeIn();
+            this.play();
+        } else if (this.currentTime >= 130) {
+            //(nyc ends) AnimalQ
+            fadeOut(); 
+            this.pause(); 
+            if (!secCreated) {
+                deletePopup(container.getObjectByName('firstQ'));
+                secCreated = makeSecondQ();
+            }
+        } else if (this.currentTime >= 105) {
+            //NYC
+            container.getObjectByName('firstQ').visible = false; //hide firstQ
+            fadeIn();
+            this.play();
+        } else if (this.currentTime >= 104) {
+            //(fish ends) RestartQ
+            fadeOut(); 
+            this.pause(); 
+            if (!thirdCreated) {
+                deletePopup(container.getObjectByName('secondQ'));
+                thirdCreated = makeThirdQ();
+            }
+        } else if (this.currentTime >= 86) {
+            //Fish
+            container.getObjectByName('secondQ').visible = false; //hide secondQ
+            fadeIn();
+            this.play();
+        } else if (this.currentTime >= 53) { 
+            //(rio ends) AnimalQ
+            fadeOut(); 
+            this.pause(); 
+            if (!secCreated) {
+                deletePopup(container.getObjectByName('firstQ'));
+                secCreated = makeSecondQ();
+            }
+        } else if (this.currentTime >= 41) { 
+            //Rio
+            container.getObjectByName('firstQ').visible = false; //hide firstQ
+            fadeIn();
+            this.play();
+        } else if (this.currentTime >= 10) {
+            //CityQ
+            fadeOut(); 
+            this.pause(); 
+            if (!firstCreated) {
+                firstCreated = makeFirstQ();
+            }
+        } else if (this.currentTime >= 0) {
+            //Yes, Restart
+            if (thirdCreated) {
+                deletePopup(container.getObjectByName('thirdQ'));
+                firstCreated = secCreated = thirdCreated = endCreated = false;
+                this.play();    
+            }
         }
     });
-    
-    // trigger by pressing any key...except spacebar...
-    // document.body.onkeyup = function(e){
-    //     if (e.keyCode == 32){
-    //         return false;
-    //     }
-    //     var mesh = scene.getObjectByName('mesh');
-    //     console.log(mesh);
-    //     mesh.material.transparent = true;
-    //     mesh.material.opacity = 1;
-    //     TweenMax.to(mesh.material, 1, { opacity: 0.5 });
-    // };
-      
+          
     // for pressing buttons 
     window.addEventListener('pointerdown', () => {selectState = true;});
 
@@ -174,7 +291,7 @@ function init() {
     scene.add(vrControl.controllerGrips[0], vrControl.controllers[0]);
     vrControl.controllers[0].addEventListener('selectstart', onSelectStart);
     vrControl.controllers[0].addEventListener('selectend', onSelectEnd);
-
+    
     scene.add(camera);
 
 }
@@ -182,31 +299,28 @@ function init() {
 // For dragging in VR 
 function onSelectStart(event) {
     selectState = true;
-    // const controller = event.target;
-    // const intersection = raycast();
+    const controller = event.target;
+    const intersection = raycast();
 
-    // if (intersection && intersection.object.visible && controller.userData.selected == undefined) {
-    //     if (intersection.object.name == 'UI' || intersection.object.name == 'popUI'){
-    //         const object = intersection.object;
-    //         controller.attach(object);
-    //         controller.userData.selected = object;   
-    //     } 
-    // }
+    if (intersection && intersection.object.visible && controller.userData.selected == undefined) {
+        if (intersection.object.name == 'quiz'){
+            const object = intersection.object;
+            controller.attach(object);
+            controller.userData.selected = object;   
+        } 
+    }
 }
 function onSelectEnd(event) {
     selectState = false; 
-    // const controller = event.target;
-    // if (controller.userData.selected !== undefined) {
-    //     const object = controller.userData.selected;
+    const controller = event.target;
+    if (controller.userData.selected !== undefined) {
+        const object = controller.userData.selected;
 
-    //     if (object.name == 'UI'){
-    //         scene.attach(object);
-    //     }else if (object.name == 'popUI'){
-    //         const curr = scene.getObjectByName('UI');
-    //         curr.attach(object);
-    //     }
-    //     controller.userData.selected = undefined;
-    // }
+        if (object.name == 'quiz'){
+            scene.attach(object);
+        }
+        controller.userData.selected = undefined;
+    }
 }
 
 // Resizing window in no VR

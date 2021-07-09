@@ -3,7 +3,7 @@
 */
 
 import * as THREE from 'https://cdn.skypack.dev/three@0.129.0';
-import { camera, scene, objsToTest, renderer, mouse, vrControl, selectState } from '/360videodemo/script/script.js';
+import { camera, objsToTest, renderer, mouse, vrControl, selectState } from '/360videodemo/script/script.js';
 
 
 let curr; // keep track of current object selected
@@ -12,8 +12,6 @@ const raycaster = new THREE.Raycaster();
 
 function updateButtons() {
     let intersect;
-
-    // if (!scene.getObjectByName('UI').visible) curr = null; //if menu disappears, clear selection
 
     if (renderer.xr.isPresenting) { // Entered VR
         vrControl.setFromController(0, raycaster.ray);
@@ -30,23 +28,8 @@ function updateButtons() {
 
     if (intersect && intersect.object.isUI && intersect.object.visible) {
         if (selectState) {
-            // if (!(intersect.object.name == 'signin' && !scene.getObjectByName('clips').visible)) {
-            //     if (scene.getObjectByName('popsign')){
-            //         if (!(intersect.object.name == 'input' && !scene.getObjectByName('popsign').visible)){
-                        intersect.object.setState('selected');
-            //             if (intersect.object.name != 'vidcontrols' && intersect.object.name != 'signin' 
-            //                 && intersect.object.name !='keys' && intersect.object.name != 'input'){
-                            curr = intersect.object;
-                    //     }
-                    // }
-                // } else {
-                //     intersect.object.setState('selected');
-                //     if (intersect.object.name != 'vidcontrols' && intersect.object.name != 'signin' 
-                //         && intersect.object.name !='keys' && intersect.object.name != 'input'){
-                //         curr = intersect.object;
-                //     }
-                // }
-            // }
+            intersect.object.setState('selected');
+            curr = intersect.object;
         } else {
             intersect.object.setState('hovered');
         }
