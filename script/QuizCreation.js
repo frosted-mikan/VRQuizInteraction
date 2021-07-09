@@ -3,13 +3,13 @@
 */
 
 import * as THREE from 'https://cdn.skypack.dev/three@0.129.0';
-import { scene, objsToTest, dragObjs } from '/360videodemo/script/script.js';
+import { scene, objsToTest, dragObjs } from '/VRQuizInteraction/script/script.js';
 
 // Load the fonts 
-var font_json_bold = "/360videodemo/assets/AvenirNextLTPro-Bold-msdf.json";
-var font_png_bold = "/360videodemo/assets/AvenirNextLTPro-Bold.png";
-var font_json = "/360videodemo/assets/AvenirNextLTPro-Regular-msdf.json";
-var font_png = "/360videodemo/assets/AvenirNextLTPro-Regular.png";
+var font_json_bold = "/VRQuizInteraction/assets/AvenirNextLTPro-Bold-msdf.json";
+var font_png_bold = "/VRQuizInteraction/assets/AvenirNextLTPro-Bold.png";
+var font_json = "/VRQuizInteraction/assets/AvenirNextLTPro-Regular-msdf.json";
+var font_png = "/VRQuizInteraction/assets/AvenirNextLTPro-Regular.png";
 
 
 const video = document.getElementById('video');
@@ -201,16 +201,16 @@ function makeSecondQ() {
 
     const loader = new THREE.TextureLoader();
 
-    loader.load('/360videodemo/assets/panda.jpg', (texture) => {
+    loader.load('/VRQuizInteraction/assets/panda.jpg', (texture) => {
         buttonPanda.set({ backgroundTexture: texture });
     });
-    loader.load('/360videodemo/assets/bear.jpg', (texture) => {
+    loader.load('/VRQuizInteraction/assets/bear.jpg', (texture) => {
         buttonBear.set({backgroundTexture: texture});
     });
-    loader.load('/360videodemo/assets/fish.jpg', (texture) => {
+    loader.load('/VRQuizInteraction/assets/fish.jpg', (texture) => {
         buttonFish.set({backgroundTexture: texture});
     });
-    loader.load('/360videodemo/assets/penguin.jpg', (texture) => {
+    loader.load('/VRQuizInteraction/assets/penguin.jpg', (texture) => {
         buttonPenguin.set({backgroundTexture: texture});
     });
 

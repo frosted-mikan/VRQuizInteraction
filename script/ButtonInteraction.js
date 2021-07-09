@@ -3,7 +3,7 @@
 */
 
 import * as THREE from 'https://cdn.skypack.dev/three@0.129.0';
-import { camera, objsToTest, renderer, mouse, vrControl, selectState } from '/360videodemo/script/script.js';
+import { camera, objsToTest, renderer, mouse, vrControl, selectState } from '/VRQuizInteraction/script/script.js';
 
 
 let curr; // keep track of current object selected

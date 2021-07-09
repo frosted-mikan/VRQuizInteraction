@@ -2,14 +2,14 @@
     Set up Three.js scene, listeners, controls
 */
 
-// use /360videodemo/script/VRButton.js for github pages
+// use /VRQuizInteraction/script/VRButton.js for github pages
 import * as THREE from 'https://cdn.skypack.dev/three@0.129.0';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js';
 import { DragControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/DragControls.js';
-import { VRButton } from '/360videodemo/script/VRButton.js';
-import VRControl from '/360videodemo/script/VRControl.js';
-import { deletePopup, makeContainer, makeFirstQ, makeSecondQ, makeThirdQ, makeEnd } from '/360videodemo/script/QuizCreation.js';
-import { updateButtons } from '/360videodemo/script/ButtonInteraction.js';
+import { VRButton } from '/VRQuizInteraction/script/VRButton.js';
+import VRControl from '/VRQuizInteraction/script/VRControl.js';
+import { deletePopup, makeContainer, makeFirstQ, makeSecondQ, makeThirdQ, makeEnd } from '/VRQuizInteraction/script/QuizCreation.js';
+import { updateButtons } from '/VRQuizInteraction/script/ButtonInteraction.js';
 
 
 let camera, scene, renderer, vrControl, orbitControls, dragControls;
