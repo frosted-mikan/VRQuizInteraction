@@ -8,9 +8,9 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/js
 import { DragControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/DragControls.js';
 import { VRButton } from '/VRQuizInteraction/script/VRButton.js';
 import VRControl from '/VRQuizInteraction/script/VRControl.js';
-import { deletePopup, makeContainer, makeFirstQ, makeSecondQ, makeThirdQ, makeEnd } from '/VRQuizInteraction/script/QuizCreation.js';
+import { deletePopup, makeContainer, makeFirstQ, makeQuizQ, makeSecondQ, makeThirdQ, makeEnd, makeFixed, makeInput } from '/VRQuizInteraction/script/QuizCreation.js';
 import { updateButtons } from '/VRQuizInteraction/script/ButtonInteraction.js';
-
+import { deleteUI, menuUIVisible, makeVideoControls } from '/VRQuizInteraction/script/VideoControls.js';
 
 let camera, scene, renderer, vrControl, orbitControls, dragControls;
 let objsToTest = []; //for buttons
@@ -31,6 +31,7 @@ function openFullscreen() {
     init();
     animate();
     makeContainer(); //make outer container
+    makeVideoControls();
 }
 document.querySelector('button').addEventListener('click', openFullscreen);
 
@@ -62,8 +63,21 @@ function enterVR() {
         mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     });
 
+    // trigger visibility of video controls by pressing any key...except spacebar...
+    document.body.onkeyup = function(e){
+        if (e.keyCode == 32){
+            return false;
+        }
+        if (scene.getObjectByName('controlsContain').visible){
+            deleteUI();
+        }
+        else {
+            menuUIVisible();
+        }
+    };
+    
     // Event Listener for timecode
-    var firstCreated, secCreated, thirdCreated, endCreated = false; //for creating each only once on update
+    var inputCreated, firstCreated, secCreated, thirdCreated, endCreated, quizCreated, fixedCreated = false; //for creating each only once on update
     video.addEventListener("timeupdate", function() {
         const container = scene.getObjectByName('quiz');
         if (this.currentTime >= 351) {
@@ -72,129 +86,166 @@ function enterVR() {
         } else if (this.currentTime >= 346) {
             //No, Thanks for playing
             fadeIn();
-            this.play();
             if (!endCreated) {
+                this.play();
                 deletePopup(container.getObjectByName('thirdQ'));
                 endCreated = makeEnd();
             }
         } else if (this.currentTime >= 331) {
             //(dubai ends) AnimalQ
-            fadeOut(); 
-            this.pause(); 
             if (!secCreated) {
-                deletePopup(container.getObjectByName('firstQ'));
+                fadeOut(); 
+                this.pause();     
                 secCreated = makeSecondQ();
             }
         } else if (this.currentTime >= 323) {
             //Dubai
-            container.getObjectByName('firstQ').visible = false; //hide firstQ
             fadeIn();
-            this.play();
+            if (container.getObjectByName('firstQ')) {
+                deletePopup(container.getObjectByName('firstQ'));
+                this.play();
+            }
         } else if (this.currentTime >= 309) {
             //(penguin ends) RestartQ
-            fadeOut(); 
-            this.pause(); 
             if (!thirdCreated) {
-                deletePopup(container.getObjectByName('secondQ'));
+                fadeOut(); 
+                this.pause();     
                 thirdCreated = makeThirdQ();
             }
         } else if (this.currentTime >= 297) {
             //Penguin
-            container.getObjectByName('secondQ').visible = false; //hide secondQ
             fadeIn();
-            this.play();
+            if (container.getObjectByName('secondQ')) {
+                deletePopup(container.getObjectByName('secondQ'));
+                this.play();
+            }
         } else if (this.currentTime >= 284) {
             //(london ends) AnimalQ
-            fadeOut(); 
-            this.pause(); 
             if (!secCreated) {
-                deletePopup(container.getObjectByName('firstQ'));
+                fadeOut(); 
+                this.pause();     
                 secCreated = makeSecondQ();
             }
         } else if (this.currentTime >= 274) {
             //London
-            container.getObjectByName('firstQ').visible = false; //hide firstQ
             fadeIn();
-            this.play();
+            if (container.getObjectByName('firstQ')) {
+                deletePopup(container.getObjectByName('firstQ'));
+                this.play();
+            }
         } else if (this.currentTime >= 171) {
             //(bear ends) RestartQ
-            fadeOut(); 
-            this.pause(); 
             if (!thirdCreated) {
-                deletePopup(container.getObjectByName('secondQ'));
+                fadeOut(); 
+                this.pause();     
                 thirdCreated = makeThirdQ();
             }
         } else if (this.currentTime >= 166) {
             //Bear
-            container.getObjectByName('secondQ').visible = false; //hide secondQ
             fadeIn();
-            this.play();
+            if (container.getObjectByName('secondQ')) {
+                deletePopup(container.getObjectByName('secondQ'));
+                this.play();
+            }
         } else if (this.currentTime >= 164) {
             //(panda ends) RestartQ
-            fadeOut(); 
-            this.pause(); 
             if (!thirdCreated) {
-                deletePopup(container.getObjectByName('secondQ'));
+                fadeOut(); 
+                this.pause();     
                 thirdCreated = makeThirdQ();
             }
+        } else if (this.currentTime >= 162.5) {
+            //InputQ
+            if (!inputCreated) {
+                fadeOut();
+                this.pause();    
+                inputCreated = makeInput();
+            } 
         } else if (this.currentTime >= 160) {
             //Panda
-            container.getObjectByName('secondQ').visible = false; //hide secondQ
             fadeIn();
-            this.play();
+            if (container.getObjectByName('secondQ')) {
+                deletePopup(container.getObjectByName('secondQ'));
+                this.play();
+            }
+            if (inputCreated) {
+                inputCreated = false;
+                this.play();
+            }
         } else if (this.currentTime >= 130) {
             //(nyc ends) AnimalQ
-            fadeOut(); 
-            this.pause(); 
             if (!secCreated) {
-                deletePopup(container.getObjectByName('firstQ'));
+                fadeOut(); 
+                this.pause();     
                 secCreated = makeSecondQ();
+                scene.remove(scene.getObjectByName('triangle'));
+                scene.remove(scene.getObjectByName('hudson'));
             }
+        } else if (this.currentTime >= 124.5) {
+            if (!fixedCreated) fixedCreated = makeFixed(); //create fixed popup
         } else if (this.currentTime >= 105) {
             //NYC
-            container.getObjectByName('firstQ').visible = false; //hide firstQ
             fadeIn();
-            this.play();
+            if (container.getObjectByName('firstQ')) {
+                deletePopup(container.getObjectByName('firstQ'));
+                this.play();
+            }
         } else if (this.currentTime >= 104) {
             //(fish ends) RestartQ
-            fadeOut(); 
-            this.pause(); 
             if (!thirdCreated) {
-                deletePopup(container.getObjectByName('secondQ'));
+                fadeOut(); 
+                this.pause();     
                 thirdCreated = makeThirdQ();
             }
         } else if (this.currentTime >= 86) {
             //Fish
-            container.getObjectByName('secondQ').visible = false; //hide secondQ
             fadeIn();
-            this.play();
+            if (container.getObjectByName('secondQ')) {
+                deletePopup(container.getObjectByName('secondQ'));
+                this.play();
+            }
         } else if (this.currentTime >= 53) { 
             //(rio ends) AnimalQ
-            fadeOut(); 
-            this.pause(); 
             if (!secCreated) {
-                deletePopup(container.getObjectByName('firstQ'));
+                fadeOut(); 
+                this.pause();     
                 secCreated = makeSecondQ();
+            }
+        } else if (this.currentTime >= 45) {
+            //QuizQ
+            if (!quizCreated) {
+                fadeOut();
+                this.pause();    
+                quizCreated = makeQuizQ();
             }
         } else if (this.currentTime >= 41) { 
             //Rio
-            container.getObjectByName('firstQ').visible = false; //hide firstQ
             fadeIn();
-            this.play();
-        } else if (this.currentTime >= 10) {
+            if (container.getObjectByName('firstQ')) {
+                deletePopup(container.getObjectByName('firstQ'));
+                this.play();
+            }
+            if (quizCreated) {
+                quizCreated = false;
+                this.play();
+            }
+        } else if (this.currentTime >= 10) { //10
             //CityQ
-            fadeOut(); 
-            this.pause(); 
             if (!firstCreated) {
+                fadeOut(); 
+                this.pause(); 
                 firstCreated = makeFirstQ();
             }
         } else if (this.currentTime >= 0) {
             //Yes, Restart
-            if (thirdCreated) {
+            if (container.getObjectByName('thirdQ')) {
                 deletePopup(container.getObjectByName('thirdQ'));
-                firstCreated = secCreated = thirdCreated = endCreated = false;
-                this.play();    
             }
+            if (container.getObjectByName('thank')) {
+                deletePopup(container.getObjectByName('thank'));
+            } 
+            inputCreated = firstCreated = secCreated = thirdCreated = endCreated = quizCreated = fixedCreated = false;
+            this.play();    
         }
     });
           
@@ -255,7 +306,7 @@ function init() {
 
     // Set up renderer
     renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.localClippingEnabled = true; // FOR HIDDENOVERFLOW
+    renderer.localClippingEnabled = true; // for hiddenoverflow
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
@@ -268,6 +319,7 @@ function init() {
     orbitControls = new OrbitControls(camera, renderer.domElement);
     camera.position.set(0, 1.6, 0);
     orbitControls.target = new THREE.Vector3(0, 1, -1.8);
+    orbitControls.rotateSpeed = -1 //invert the controls 
 
     // Drag controls
     dragControls = new DragControls(dragObjs, camera, renderer.domElement);
@@ -291,6 +343,16 @@ function init() {
     scene.add(vrControl.controllerGrips[0], vrControl.controllers[0]);
     vrControl.controllers[0].addEventListener('selectstart', onSelectStart);
     vrControl.controllers[0].addEventListener('selectend', onSelectEnd);
+
+    vrControl.controllers[0].addEventListener('squeezestart', ()=> { 
+        if (scene.getObjectByName('controlsContain').visible) {
+            deleteUI();
+        }
+        else {
+            menuUIVisible();
+        }
+    });
+
     
     scene.add(camera);
 
@@ -342,4 +404,4 @@ function render() {
     updateButtons(); // for buttons 
 }
 
-export { camera, scene, objsToTest, dragObjs, renderer, mouse, vrControl, selectState };
+export { camera, scene, objsToTest, dragObjs, renderer, mouse, vrControl, selectState, fadeIn };

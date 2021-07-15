@@ -32,6 +32,7 @@ function updateButtons() {
             curr = intersect.object;
         } else {
             intersect.object.setState('hovered');
+            curr = intersect.object;
         }
     } 
 
