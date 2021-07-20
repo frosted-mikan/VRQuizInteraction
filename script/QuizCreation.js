@@ -679,9 +679,12 @@ function makeFixed() {
     //Make triangle
     const geometry = new THREE.BufferGeometry();
     const vertices = new Float32Array( [
-        -2.2, 1.4, -5,
-        -1.9, 1.4, -5,
-        -1.8, 0.9, -5
+        // -2.2, 1.4, -5,
+        // -1.9, 1.4, -5,
+        // -1.8, 0.9, -5
+        -2.2, -0.1, -5,
+        -1.9, -0.1, -5,
+        -1.8, -0.6, -5
     ] );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
     const material = new THREE.MeshBasicMaterial( { color: 0x222222, side: THREE.DoubleSide } );
