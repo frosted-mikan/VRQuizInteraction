@@ -37,7 +37,7 @@ function makeVideoControls() {
         backgroundOpacity: 1,
         margin: 0.03
     });
-    controlsContain.position.set(0, 0.5, -1);
+    controlsContain.position.set(0, -0.5, -1);
     controlsContain.rotation.x = -0.5;
     controlsContain.name = "controlsContain";
     controlsContain.visible = false;

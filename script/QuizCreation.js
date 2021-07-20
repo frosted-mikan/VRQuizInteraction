@@ -18,7 +18,8 @@ function makeContainer() {
     //Group with all content
     const container = new THREE.Group();
     container.name = "quiz";
-    container.position.set(0, 1, -1); 
+    // container.position.set(0, 1, -1); 
+    container.position.set(0, 0.15, -1); 
     scene.add(container);
     dragObjs.push(container); //for DragControls
 
@@ -671,7 +672,9 @@ function makeFixed() {
         fontSize: 0.1
     });
 
-    hudsonRiver.position.set(-2, 1.5, -5);
+    // hudsonRiver.position.set(-2, 1.5, -5);
+    hudsonRiver.position.set(-2, 0, -5);
+
 
     //Make triangle
     const geometry = new THREE.BufferGeometry();
