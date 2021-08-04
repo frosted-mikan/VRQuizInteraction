@@ -95,7 +95,6 @@ function deleteKeyboard() {
    camera.remove(curr);
 }
 
-
 // Make the actual keyboard
 function makeKeyboard() {
 	const keyboard = new ThreeMeshUI.Keyboard({

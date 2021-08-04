@@ -159,10 +159,10 @@ function makeFirstQ() {
 function makeAnswer(question, answer, count) {    
     const container = scene.getObjectByName('quiz');    
     //Delete the quiz q first 
-    if (question == "quizQ") {
+    if (question === "quizQ") {
         deletePopup(container.getObjectByName('quizQ'));
     }
-    else if (question == "inputQ") {
+    else if (question === "inputQ") {
         deletePopup(container.getObjectByName('inputQ'));
         deletePopup(container.getObjectByName('keyboard'));
         deleteKeyboard();
@@ -247,7 +247,7 @@ function makeAnswer(question, answer, count) {
             counter += 1;
             if (counter >= 2) {
                 console.log('go back');
-                if (question == 'quizQ') video.currentTime = 41.5; //go back to Rio 
+                if (question === 'quizQ') video.currentTime = 41.5; //go back to Rio 
                 else video.currentTime = 160;
                 deletePopup(container.getObjectByName('answer'));   
             }
@@ -748,7 +748,7 @@ function makeInput() {
         state: 'selected',
         onSet: ()=> {
             var content = userText.content;
-            if (content == "chengdu") { 
+            if (content === "chengdu") { 
                 makeAnswer('inputQ', true, 2);
             } else {
                 makeAnswer('inputQ', false, 2);

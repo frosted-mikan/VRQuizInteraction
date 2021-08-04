@@ -9,7 +9,7 @@ import { camera, objsToTest, renderer, mouse, vrControl, selectState } from '/VR
 let curr; // keep track of current object selected
 const raycaster = new THREE.Raycaster();
 
-
+// Update state of buttons in each animation loop
 function updateButtons() {
     let intersect;
 
@@ -26,18 +26,23 @@ function updateButtons() {
         intersect = raycast();
     }
 
+    // Intersected with an object
     if (intersect && intersect.object.isUI && intersect.object.visible) {
+        // Set state as selected
         if (selectState) {
             intersect.object.setState('selected');
             curr = intersect.object;
-        } else {
+        } 
+        // Set state as hovered
+        else {
             intersect.object.setState('hovered');
             curr = intersect.object;
         }
     } 
 
+    // Set state as idle
     objsToTest.forEach((obj) => {
-        if ((!intersect || obj !== intersect.object) && obj.isUI && obj != curr) {
+        if ((!intersect || obj !== intersect.object) && obj.isUI && obj !== curr) {
             obj.setState('idle');
         }
     });

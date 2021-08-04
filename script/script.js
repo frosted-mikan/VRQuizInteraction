@@ -65,7 +65,7 @@ function enterVR() {
 
     // trigger visibility of video controls by pressing any key...except spacebar...
     document.body.onkeyup = function(e){
-        if (e.keyCode == 32){
+        if (e.keyCode === 32){
             return false;
         }
         if (scene.getObjectByName('controlsContain').visible){
@@ -270,6 +270,7 @@ function enterVR() {
 
 // Init three.js scene
 function init() {
+    // Camera
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 2000);
     camera.layers.enable(1); // render left view when no stereo available
 
@@ -277,9 +278,10 @@ function init() {
     video.play();
     const texture = new THREE.VideoTexture(video);
 
+    // Scene
     scene = new THREE.Scene();
 
-    // Left eye
+    // Create sphere with video for left eye
     const geometry1 = new THREE.SphereGeometry(500, 60, 40);
     // invert the geometry on the x-axis so that all of the faces point inward
     geometry1.scale(-1, 1, 1);
@@ -292,7 +294,7 @@ function init() {
     mesh1.layers.set(1); // display in left eye only
     scene.add(mesh1);
 
-    // Right eye
+    // Create sphere with video for right eye
     const geometry2 = new THREE.SphereGeometry(500, 60, 40);
     geometry2.scale(-1, 1, 1);
 
@@ -304,7 +306,7 @@ function init() {
     mesh2.layers.set(2); // display in right eye only
     scene.add(mesh2);
 
-    // Set up renderer
+    // Renderer
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.localClippingEnabled = true; // for hiddenoverflow
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -364,8 +366,8 @@ function onSelectStart(event) {
     const controller = event.target;
     const intersection = raycast();
 
-    if (intersection && intersection.object.visible && controller.userData.selected == undefined) {
-        if (intersection.object.name == 'quiz'){
+    if (intersection && intersection.object.visible && controller.userData.selected === undefined) {
+        if (intersection.object.name === 'quiz'){
             const object = intersection.object;
             controller.attach(object);
             controller.userData.selected = object;   
@@ -378,7 +380,7 @@ function onSelectEnd(event) {
     if (controller.userData.selected !== undefined) {
         const object = controller.userData.selected;
 
-        if (object.name == 'quiz'){
+        if (object.name === 'quiz'){
             scene.attach(object);
         }
         controller.userData.selected = undefined;
